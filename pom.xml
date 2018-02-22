@@ -47,6 +47,12 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-eureka</artifactId>
 				<version>${spring.cloud.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
@@ -78,6 +84,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<modules>
-		<module>hk-discover-eureka</module>
+		<module>hk-eureka-simple</module>
+		<module>hk-user-service</module>
 	</modules>
 </project>
