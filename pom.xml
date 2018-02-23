@@ -86,5 +86,7 @@
 	<modules>
 		<module>hk-eureka-simple</module>
 		<module>hk-user-service</module>
+		<module>hk-user-service-highavailability</module>
+		<module>hk-eureka-highavailability</module>
 	</modules>
 </project>
