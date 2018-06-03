@@ -2,8 +2,10 @@ package com.hk.user.service.controller;
 
 import com.hk.user.service.domain.User;
 import com.hk.user.service.repository.UserRepository;
+import com.hk.user.vo.UserVo;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +24,11 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("{id}")
-    public User get(@PathVariable Long id) {
-        return userRepository.findOne(id);
+    public UserVo get(@PathVariable Long id) {
+        User user = userRepository.findOne(id);
+        UserVo vo = new UserVo();
+        BeanUtils.copyProperties(user, vo);
+        return vo;
     }
 
     @RequestMapping("save")

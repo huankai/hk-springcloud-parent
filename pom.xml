@@ -98,5 +98,7 @@
     <modules>
         <module>hk-eureka-simple</module>
         <module>hk-user-service</module>
+        <module>hk-user-vo</module>
+        <module>hk-movie-service</module>
     </modules>
 </project>
