@@ -100,3 +100,37 @@ public class UserController {
     }
 }
 ```
+
+# 三、添加电影微服务，并微服务发布到 eureka上 #
+重新创建项目 `hk-movie-service`，配置相关信息，请看项目配置文件`application.yml`
+
+启动后，会自动注册到Eureka Server上，使用电影微服务调用用户微服务
+```
+@RestController
+@RequestMapping("movieorder")
+public class MovieOrderController {
+	/**
+     * 用户微服务path
+     */
+    @Value("${user.service.path}")
+    private String userServicePath;
+
+	/**
+	 * 电影微服务调用用户微服务
+	 *
+	 * @param userId
+	 */
+	@RequestMapping("user/{userId}")
+	public UserVo getUser(@PathVariable Long userId) {
+	    return restTemplate.getForObject(userServicePath + "user/" + userId, UserVo.class);
+	}
+}
+```
+在浏览器输入 http://localhost:8991/movieorder/user/1 查看结果。
+
+
+以上存在的问题：
+ - userServicePath 用户微服务路径写在了 电影微服务配置文件中，一旦用户微服务部署环境发生变化，电影微服务也需要修改配置，如果用户微服务被很多其它的微服务所调用，则其它所有的微服务都需要修改配置，这是不能容忍的。
+
+
+ 
