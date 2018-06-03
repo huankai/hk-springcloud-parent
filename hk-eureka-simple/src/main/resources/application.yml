@@ -1,13 +1,30 @@
 server:
   port: 8761
 
+
+
 # eureka：eureka server同时也是一个 client
 # 通过配置 register-with-eureka 与  fetch-registry ,false 表示自己是一个eureka server.
 eureka:
   instance:
     hostname: localhost # 实例的主机名
   client:
-    register-with-eureka: false #该参数是否向 Eureka 服务器注册自己，以供外部应用发现自己，。在某些情况下，你可能不希望当前的应用被外部的其他应用发现，而只是想从服务器发现其他服务的实例，此时你可以将此值设为 false，默认值：true
-    fetch-registry: false # 该实例是否向 Eureka 服务器获取所有的注册信息表，默认值:true
+    #该参数是否向 Eureka 服务器注册自己，以供外部应用发现自己，。
+    #在某些情况下，你可能不希望当前的应用被外部的其他应用发现，而只是想从服务器发现其他服务的实例，
+    # 此时你可以将此值设为 false，默认值：true
+    register-with-eureka: false
+
+    # 该实例是否向 Eureka 服务器获取所有的注册信息表，默认值:true
+    fetch-registry: false
     service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka # 该实例与 Eureka 服务器通讯的 URL 地址列表。如果 Eureka 服务器地址不止一个，则使用英文的逗号分隔。
+      # 该实例与 Eureka 服务器通讯的 URL 地址列表。如果 Eureka 服务器地址不止一个，则使用英文的逗号分隔。
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+      # 添加Eureka Server 登陆功能，使用Basic，这里的user就是指定用户名，password123就是指定用户密码
+      defaultZone: http://user:password123@${eureka.instance.hostname}:${server.port}/eureka
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: user
+    password: password123

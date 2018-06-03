@@ -1,11 +1,30 @@
 server:
   port: 8881
 
+logging:
+  config: classpath:log4j2.xml
+
 spring:
   application:
-    name: user-service
+    name: user-service # 指定名称，建议全部使用小写，在eureka 中会全部转换为大写
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    platform: h2 #  使用 h2数据库模拟数据
+    data: classpath:data.sql # h2数据库数据脚本文件
+    schema: classpath:schema.sql # h2 DDL 脚本文件
 
-eureka: 
+
+eureka:
   client:
-    service-url: 
-      defaultZone: http://localhost:8761/eureka
+    service-url:
+#      defaultZone: http://localhost:8761/eureka  #注册到 eureka服务中
+      defaultZone: http://user:password123@localhost:8761/eureka  #注册到 eureka服务中,添加认证
+  instance:
+#    status-page-url-path: /info
+#    health-check-url-path: /health
+#    instance-id: ${spring.application.name}:${server.port} #指定实例名称
+#    prefer-ip-address: false
