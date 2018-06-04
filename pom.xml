@@ -34,6 +34,17 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-feign</artifactId>
+                <version>${spring.cloud.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-config</artifactId>
                 <version>${spring.cloud.version}</version>
                 <exclusions>
@@ -98,6 +109,8 @@
     <modules>
         <module>hk-eureka-simple</module>
         <module>hk-user-service</module>
+        <module>hk-feign</module>
+        <module>hk-feign-customizing</module>
         <module>hk-user-vo</module>
         <module>hk-movie-service</module>
     </modules>

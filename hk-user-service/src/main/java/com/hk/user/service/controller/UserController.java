@@ -7,10 +7,7 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author huangkai
@@ -31,9 +28,19 @@ public class UserController {
         return vo;
     }
 
-    @RequestMapping("save")
-    public User save(User user) {
-        return userRepository.save(user);
+    /**
+     * Feign 被调用方，必须与调用方一致，如请求方法 、@RequestBody
+     * @param user
+     * @return
+     */
+    @PostMapping("save")
+    public User save(@RequestBody User user) {
+        return user;
+    }
+
+    @GetMapping("get")
+    public User getUser(User user) {
+        return user;
     }
 
     @Autowired
