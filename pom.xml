@@ -108,6 +108,7 @@
     </dependencyManagement>
     <modules>
         <module>hk-eureka-simple</module>
+        <module>hk-eureka-ha</module>
         <module>hk-user-service</module>
         <module>hk-feign</module>
         <module>hk-feign-customizing</module>

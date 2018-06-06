@@ -1,64 +1,19 @@
-Feign使用与自定义配置：
+# Eureka 高可用配置 #
 
-**涉及项目**
-- hk-eureka-simple ： eureka server
-- hk-user-service：用户微服务
-- hk-feign：feign 测试
-- hk-feign-customizing：feign自定义配置
+创建项目 `hk-eureka-ha`，其实就是从 `hk-eureka-simple`项目复制过来的。
 
-# 一、基本使用 #
+修改 `application.yml` 文件内容，修改后的内容请查看文件。配置了三个 profiles
 
-## 1、创建项目 ##
-创建项目 `hk-feign` ，添加相关依赖，请查看 `hk-feign` 工程的 pom.xml 文件。
-
-## 2、启动类 ##
-在启动类上添加 `org.springframework.cloud.netflix.feign.EnableFeignClients` 注解，详见`com.hk.movie.FeignApplication` 类
-
-## 3、创建 `UserFeignClient` 接口 ##
-类上标注 `org.springframework.cloud.netflix.feign.FeignClient`注解，此注解的name可以指定需要调用的是哪个微服务(如这里配置的 user-service，会调用用户微服务)。然后定义相关测试方法，Feign 默认使用的契约是 SpringMvcContract，所以可以使用 Spring mvc 相关注解。
-<font color='red'>**注意：**</font>
-- @PathVariable 必须指定 value ,否则启动报错，如 `@PathVariable("id") Long id`，不能简写成 `@PathVariable Long id`，此种写法在 Spring mvc 中可以，在这里不可以
-- 如果参数对象是复杂类型，必须使用 Post 传递参数，即使使用 GET，feign还是会转换为 POST，并在参数加上 @RequestBody，两边都要加，如果不加，服务被调用方接收不到任何参数值。即使你修改了契约为Feigin自身，也如此，后面自定义配置中会讲到。
-
-4、定义 `com.hk.movie.controller.UserController` 调用 UserFeignClient中的方法。
-
-# 二、自定义配置 #
-我们知道，Spring Application也是父子容器，每一个 FeignClient 都是一个应用上下文(都有自己的容器)，即，每一个FeignClient都可以有自己的相关配置，互不影响。
-
-1、创建新工程 : `hk-feign-customizing`
-
-2、添加配置：
-在 `com.hk.movie.feign.UserFeignClient` 类上的 `org.springframework.cloud.netflix.feign.FeignClient` 添加 `configuration`属性值，指定此FeignClient的配置信息，注意:此文件的放置目录和 ribbon 一样，不应当被Application所在的包扫描到，原因见 Ribbon中的说明 。
-
-3、在配置文件中修改 Feign默认的 Contract ,
-默认的 Contract 为 `org.springframework.cloud.netflix.feign.support.SpringMvcContract`，修改为 feign 的Contract 后，就可以使用feign相关的注解了，查看`com.hk.movie.feign.UserFeignClient`中的方法注解，使用的feign注解，关于feign注解的使用，可以查看 https://github.com/OpenFeign/feign
-
+修改 hosts 文件，添加如下内容 ：
 ```
-@Bean
-public Contract feignContract() {
-    return new feign.Contract.Default();
-}
+127.0.0.1 peer1 peer2 peer3
 ```
 
-4、添加Basic认证测试:
-查看 `com.hk.movie.feign.EurekaFeignClient` 注释
-查看 `com.hk.config.EurekaFeignConfiguration` 注释
+使用 idea 分别启动三个服务。
+浏览器访问 http://localhost:8765  或 http://localhost:8766 或 http://localhost:8767 查看高可用相关信息。
 
-# 三、开启Feign日志 #
 
-在自定义配置中添加内容如下：
-```
-@Bean
-Logger.Level level(){
-    return Logger.Level.FULL;
-}
-```
+客户端可以连接任意一个eureka 服务 ，即可 某个或多个 eureka server 不可用，但至少还有一个可以，都能保证整个 eureka 服务的可用性。但是，如果客户端只配置某个 eureka server，如果这个eureka server 不可以，在启动client的时候，不能正常连接到 eureka 其它服务，所以建议 每个client配置连接所有的eureka server，以英文分号(`,`)分隔
 
-再开启日志：
-log4j2.xml添加：
+事实上， eureka的注册信息不仅仅复制在server端，也会复制到client端。也就是说，即便eureka的server全部挂掉，client间任然是可以互通的！譬如client1 client2都已经注册在了server1 server2上，即便server1 server2全死掉了，Client1还是可以和client2进行互通，因为eureka的客户端也会复制所有的注册信息，当server全死掉后，客户端会根据自己本地的备份进行连接。
 
-```
-<logger name="com.hk.movie.feign.UserFeignClient" level="debug" additivity="false">
-    <appender-ref ref="Console"/>
-</logger>
-```

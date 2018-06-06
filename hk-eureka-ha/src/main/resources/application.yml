@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: eureka-server-highavailability
+  profiles:
+    active: peer1
+  
+logging:
+  config: classpath:log4j2.xml
+
+
+---
+spring:
+  profiles: peer1
+server:
+  port: 8765
+eureka:
+  instance:
+    hostname: peer1
+    prefer-ip-address: true
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://peer2:8766/eureka/,http://peer3:8767/eureka/
+
+---
+spring:
+  profiles: peer2
+server:
+  port: 8766
+eureka:
+  instance:
+    hostname: peer2
+    prefer-ip-address: true
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://peer1:8765/eureka/,http://peer3:8767/eureka/
+
+---
+spring:
+  profiles: peer3
+server:
+  port: 8767
+eureka:
+  instance:
+    hostname: peer3
+    prefer-ip-address: true
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://peer1:8765/eureka/,http://peer2:8766/eureka/
