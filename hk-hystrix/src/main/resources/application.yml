@@ -1,0 +1,25 @@
+server:
+  port: 8891
+
+logging:
+  config: classpath:log4j2.xml
+
+eureka:
+  client:
+    service-url:
+      # 注册到 eureka服务中,添加认证
+      defaultZone: http://user:password123@localhost:8761/eureka
+
+spring:
+  application:
+    name: hk-hystrix
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+          # 配置超时时间，单位为毫秒，默认值为 1000 毫秒
+            timeoutInMilliseconds: 5000
+

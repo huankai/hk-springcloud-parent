@@ -23,7 +23,7 @@ eureka:
     service-url:
 #      defaultZone: http://localhost:8761/eureka  #注册到 eureka服务中
       defaultZone: http://user:password123@localhost:8761/eureka  #注册到 eureka服务中,添加认证
-  instance:
+#  instance:
 #    status-page-url-path: /info
 #    health-check-url-path: /health
 #    instance-id: ${spring.application.name}:${server.port} #指定实例名称
