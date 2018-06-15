@@ -144,6 +144,5 @@
         <module>hk-movie-service</module>
         <module>hk-hystrix</module>
         <module>hk-hystrix-feign</module>
-        <module>hk-gateway-zuul</module>
     </modules>
 </project>
