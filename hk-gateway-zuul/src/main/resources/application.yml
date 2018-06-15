@@ -1,0 +1,41 @@
+server:
+  port: 8070
+
+spring:
+  application:
+    name: hk-gateway-zuul
+
+logging:
+  config: classpath:log4j2.xml
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      # 注册到 eureka服务中,添加认证
+      defaultZone: http://user:password123@localhost:8761/eureka
+zuul:
+#  prefix: /zuul  # 定义全局前缀
+  routes:
+    sc-base: # 要调用的服务名称
+      path: /base/**
+#      prefix: /base #定义指定服务的前缀
+#      stripPrefix: false
+
+    sjq-sc-cqrs:
+      path: /cqrs/**
+    sc-zhsj:
+      path: /zhsj/**
+
+    others: # 任意定义
+      path : / # 如果以上都不能匹配，以 / 开头的，转发到本服务中 /others/one 路径
+      url: forward:/others
+
+  # ignored 指定服务
+#  ignored-services:
+#    - service-id1
+#    - service-id2
+
+
+
