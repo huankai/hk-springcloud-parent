@@ -1,13 +1,13 @@
 server:
   port: 8761
 
-
-
 # eureka：eureka server同时也是一个 client
 # 通过配置 register-with-eureka 与  fetch-registry ,false 表示自己是一个eureka server.
 eureka:
   instance:
     hostname: localhost # 实例的主机名
+#    appname:  # 服务名，默认取 spring.application.name 配置值，如果没有  则为 unknown
+    prefer-ip-address: true #不使用主机名来定义注册中心的地址，而使用IP地址的形式，如果设置了eureka.instance.ip-address 属性，则使用该属性配置的IP，否则自动获取除环路IP外的第一个IP地址
   client:
     #该参数是否向 Eureka 服务器注册自己，以供外部应用发现自己，。
     #在某些情况下，你可能不希望当前的应用被外部的其他应用发现，而只是想从服务器发现其他服务的实例，
@@ -21,6 +21,7 @@ eureka:
 #      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
       # 添加Eureka Server 登陆功能，使用Basic，这里的user就是指定用户名，password123就是指定用户密码
       defaultZone: http://user:password123@${eureka.instance.hostname}:${server.port}/eureka
+
 
 security:
   basic:

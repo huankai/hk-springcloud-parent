@@ -1,0 +1,33 @@
+server:
+  port: 8895
+
+spring:
+  application:
+    name: hk-hystrix-feign
+
+logging:
+  config: classpath:log4j2.xml
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      # 注册到 eureka服务中,添加认证
+      defaultZone: http://user:password123@localhost:8761/eureka
+
+#开始 feign hystrix 支持
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+          # 配置超时时间，单位为毫秒，默认值为 1000 毫秒
+            timeoutInMilliseconds: 5000
+
+

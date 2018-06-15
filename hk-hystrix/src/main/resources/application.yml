@@ -5,6 +5,8 @@ logging:
   config: classpath:log4j2.xml
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     service-url:
       # 注册到 eureka服务中,添加认证
@@ -14,6 +16,23 @@ spring:
   application:
     name: hk-hystrix
 
+management:
+  port: 8099 # 指定管理端口，默认会使用 ${server.port}
+  security:
+#    enabled: false # actuator 中的一些url有些请求需要授权才能访问，关闭安全认证，默认为true，如果需要安全认证，需要添加 spring-boot-starter-security ,并配置 security.user.name=xxx,security.user.password=xxx
+#  context-path: /actuator #指定管理端口上下文路径
+
+security:
+  user:
+    name: user
+    password: 123456
+
+#endpoints:
+#  health:
+#    enabled: true # 启用( true) 禁用(false) /health 端点
+#    path: haha  # 配置 health url ，默认为 health
+#    id:  health # 与 path 相同，只能包含数字、字母 、下滑线，如果配置了path,则优先使用 path值
+
 hystrix:
   command:
     default:
@@ -22,4 +41,5 @@ hystrix:
           thread:
           # 配置超时时间，单位为毫秒，默认值为 1000 毫秒
             timeoutInMilliseconds: 5000
+
 

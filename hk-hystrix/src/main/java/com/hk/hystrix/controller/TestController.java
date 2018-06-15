@@ -1,6 +1,7 @@
 package com.hk.hystrix.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,12 +68,14 @@ public class TestController {
      * @param userId
      */
     @RequestMapping("user/{userId}")
-    @HystrixCommand(fallbackMethod = "defaultUser")
+    @HystrixCommand(fallbackMethod = "defaultUser",commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "5000")})
     public UserVo getUser(@PathVariable Long userId) {
         return restTemplate.getForObject("http://user-service/user/" + userId, UserVo.class);
     }
 
     /**
+     * 如果以上方法调用用户微服务不成功，会调用此方法
+     *
      * @param userId
      * @return
      */

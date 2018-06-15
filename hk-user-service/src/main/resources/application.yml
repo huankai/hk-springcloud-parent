@@ -19,10 +19,12 @@ spring:
 
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     service-url:
 #      defaultZone: http://localhost:8761/eureka  #注册到 eureka服务中
-      defaultZone: http://user:password123@localhost:8761/eureka  #注册到 eureka服务中,添加认证
+      defaultZone: http://user:password123@localhost:8761/eureka #注册到 eureka服务中,添加认证
 #  instance:
 #    status-page-url-path: /info
 #    health-check-url-path: /health

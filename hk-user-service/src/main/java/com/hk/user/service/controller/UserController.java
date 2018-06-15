@@ -23,13 +23,17 @@ public class UserController {
     @GetMapping("{id}")
     public UserVo get(@PathVariable Long id) {
         User user = userRepository.findOne(id);
-        UserVo vo = new UserVo();
-        BeanUtils.copyProperties(user, vo);
+        UserVo vo = null;
+        if (user != null) {
+            vo = new UserVo();
+            BeanUtils.copyProperties(user, vo);
+        }
         return vo;
     }
 
     /**
      * Feign 被调用方，必须与调用方一致，如请求方法 、@RequestBody
+     *
      * @param user
      * @return
      */

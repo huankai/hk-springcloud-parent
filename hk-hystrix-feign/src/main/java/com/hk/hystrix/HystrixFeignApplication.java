@@ -2,9 +2,7 @@ package com.hk.hystrix;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 /**
  * <p>
@@ -18,19 +16,11 @@ import org.springframework.web.client.RestTemplate;
  * @author huangkai
  * @date 2018-6-3 15:00
  */
-//@SpringBootApplication
-//@EnableEurekaClient
-//@EnableCircuitBreaker
+@EnableFeignClients
 @SpringCloudApplication
-public class HystrixApplication {
-
-    @Bean
-    @LoadBalanced
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+public class HystrixFeignApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HystrixApplication.class, args);
+        SpringApplication.run(HystrixFeignApplication.class, args);
     }
 }
